@@ -4,7 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-//import 'home_screen.dart';
+import 'home_screen.dart';
 
 void main() {
   runApp(const HomeworkTrackerApp());
@@ -57,10 +57,10 @@ class SplashScreen extends StatefulWidget {
   final String title;
 
   @override
-  State<SplashScreen> createState() => _MyHomePageState();
+  State<SplashScreen> createState() => _SplashCreenState();
 }
 
-class _MyHomePageState extends State<SplashScreen> {
+class _SplashCreenState extends State<SplashScreen> {
   int _counter = 0;
 
   void _incrementCounter() {
