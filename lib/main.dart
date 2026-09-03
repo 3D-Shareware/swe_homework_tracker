@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+
+//import 'home_screen.dart';
+
 void main() {
-  runApp(const MyApp());
+  runApp(const HomeworkTrackerApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class HomeworkTrackerApp extends StatelessWidget {
+  const HomeworkTrackerApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Homework Tracker',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -28,15 +34,16 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        //primarySwatch: Colors.deepOrange,
+        colorScheme: .fromSeed(seedColor: Colors.deepOrange),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const SplashScreen(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key, required this.title});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -50,10 +57,10 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<SplashScreen> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<SplashScreen> {
   int _counter = 0;
 
   void _incrementCounter() {
