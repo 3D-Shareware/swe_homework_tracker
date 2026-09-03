@@ -64,6 +64,16 @@ class _SplashCreenState extends State<SplashScreen> {
   int _counter = 0;
 
   void _incrementCounter() {
+    @override
+    void initState() {
+      super.initState();
+      Timer(const Duration(seconds: 3), () {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+        );
+      });
+    }
+
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -76,13 +86,26 @@ class _SplashCreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.red,
+      body: Center(
+        child: Text(
+          "Homework Tracker",
+          style: TextStyle(
+            fontSize: 48,
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
+    /*return Scaffold(
       appBar: AppBar(
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
@@ -125,5 +148,6 @@ class _SplashCreenState extends State<SplashScreen> {
         child: const Icon(Icons.add),
       ),
     );
+    */
   }
 }
