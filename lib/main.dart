@@ -61,26 +61,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashCreenState extends State<SplashScreen> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    @override
-    void initState() {
-      super.initState();
-      Timer(const Duration(seconds: 3), () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-        );
-      });
-    }
-
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+  @override
+  void initState() {
+    super.initState();
+    Timer(const Duration(seconds: 3), () {
+      Navigator.of(
+        context,
+      ).pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen()));
     });
   }
 
@@ -91,23 +78,16 @@ class _SplashCreenState extends State<SplashScreen> {
       height: 100,
       decoration: BoxDecoration(
         // I understand RGB more than this silly color list
-        //color: Color.fromARGB(255, 50, 50, 50),
-        image: DecorationImage(
-          image: NetworkImage(
-            // beautiful picture of colorado I found online
-            "https://www.colorado.com/_next/image?url=%2Fsites%2Fdefault%2Ffiles%2F2025-07%2F2023_1_1770%2520%25281%2529.jpg&w=2048&q=75",
-          ),
-          fit: BoxFit.cover,
-        ),
+        color: Color.fromARGB(255, 50, 50, 50),
         border: Border.all(color: Colors.blueAccent, width: 10),
       ),
 
       child: Center(
         child: Text(
-          "Homework Tracker",
+          "Loading Homework Tracker...", // no it's not but that's okay
           style: TextStyle(
-            fontSize: 48,
-            color: Color.fromARGB(255, 250, 250, 250),
+            fontSize: 32,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
