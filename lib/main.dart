@@ -86,14 +86,21 @@ class _SplashCreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.red,
-      body: Center(
+    return Container(
+      width: 150,
+      height: 100,
+      decoration: BoxDecoration(
+        // I understand RGB more than this silly color list
+        color: Color.fromARGB(255, 50, 50, 50),
+        border: Border.all(color: Colors.blueAccent, width: 10),
+      ),
+
+      child: Center(
         child: Text(
           "Homework Tracker",
           style: TextStyle(
             fontSize: 48,
-            color: Colors.black,
+            color: Color.fromARGB(255, 250, 250, 250),
             fontWeight: FontWeight.bold,
           ),
         ),
