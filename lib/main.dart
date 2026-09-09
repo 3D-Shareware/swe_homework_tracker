@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 
 import 'home_screen.dart';
 
+import "main_navigation.dart";
+
 void main() {
   runApp(const HomeworkTrackerApp());
 }
@@ -65,9 +67,9 @@ class _SplashCreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 3), () {
-      Navigator.of(
-        context,
-      ).pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen()));
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
+      );
     });
   }
 
