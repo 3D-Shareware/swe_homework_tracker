@@ -62,10 +62,26 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
       body: ListView.builder(
         itemCount: _assignments.length,
         itemBuilder: (context, index) {
-          return CheckboxListTile(
-            title: Text(_assignments[index]["title"]),
-            value: _assignments[index]["completed"] ?? false,
-            onChanged: (value) => _toggleCompleted(index, value),
+          return Card(
+            color: Colors.blue,
+            child: Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: ListTile(
+                title: Text(_assignments[index]["title"]),
+                trailing: Container(
+                  width: 20,
+                  child: Row(
+                    children: [
+                      IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+                      CheckboxListTile(
+                        value: _assignments[index]["completed"] ?? false,
+                        onChanged: (value) => _toggleCompleted(index, value),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           );
         },
       ),
