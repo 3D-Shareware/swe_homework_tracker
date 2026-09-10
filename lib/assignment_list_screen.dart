@@ -58,13 +58,13 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("YOUR Assignments")),
+      appBar: AppBar(title: const Text("Assignments")),
       body: ListView.builder(
         itemCount: _assignments.length,
         itemBuilder: (context, index) {
           return CheckboxListTile(
             title: Text(_assignments[index]["title"]),
-            value: _assignments[index]["completed"],
+            value: _assignments[index]["completed"] ?? false,
             onChanged: (value) => _toggleCompleted(index, value),
           );
         },
