@@ -55,6 +55,18 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
     });
   }
 
+  void _removeAssignment(int index) {
+    setState(() {
+      _assignments.removeAt(index);
+    });
+  }
+
+  void _renameAssignment(int index) {
+    setState(() {
+      _assignments[index]["title"] = "New name";
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,19 +75,37 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
         itemCount: _assignments.length,
         itemBuilder: (context, index) {
           return Card(
-            color: Colors.blue,
+            color: Color.from(alpha: 1.0, red: 0.9, green: 0.9, blue: 1.0),
             child: Padding(
               padding: const EdgeInsets.all(14.0),
               child: ListTile(
                 title: Text(_assignments[index]["title"]),
-                trailing: Container(
-                  width: 20,
+                trailing: SizedBox(
+                  width: 196,
                   child: Row(
+                    spacing: 64,
                     children: [
-                      IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
-                      CheckboxListTile(
-                        value: _assignments[index]["completed"] ?? false,
-                        onChanged: (value) => _toggleCompleted(index, value),
+                      Expanded(
+                        child: CheckboxListTile(
+                          value: _assignments[index]["completed"] ?? false,
+                          onChanged: (value) => _toggleCompleted(index, value),
+                        ),
+                      ),
+                      Expanded(
+                        child: IconButton(
+                          onPressed: () {
+                            _renameAssignment(index);
+                          },
+                          icon: Icon(Icons.delete),
+                        ),
+                      ),
+                      Expanded(
+                        child: IconButton(
+                          onPressed: () {
+                            _removeAssignment(index);
+                          },
+                          icon: Icon(Icons.delete),
+                        ),
                       ),
                     ],
                   ),
