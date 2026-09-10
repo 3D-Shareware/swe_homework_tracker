@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-
-import 'home_screen.dart';
-
 import "main_navigation.dart";
 
 void main() {

@@ -62,9 +62,42 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
   }
 
   void _renameAssignment(int index) {
-    setState(() {
-      _assignments[index]["title"] = "New name";
-    });
+    String newAssignmentTitle = "";
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Rename Assignment"),
+          content: TextField(
+            autofocus: true,
+            decoration: const InputDecoration(
+              hintText: "Enter assignment title",
+            ),
+            onChanged: (value) {
+              newAssignmentTitle = value;
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                if (newAssignmentTitle.trim().isNotEmpty) {
+                  setState(() {
+                    _assignments[index]["title"] = newAssignmentTitle.trim();
+                  });
+                }
+                Navigator.pop(context);
+              },
+              child: const Text("Rename"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -96,7 +129,7 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
                           onPressed: () {
                             _renameAssignment(index);
                           },
-                          icon: Icon(Icons.delete),
+                          icon: Icon(Icons.edit),
                         ),
                       ),
                       Expanded(
