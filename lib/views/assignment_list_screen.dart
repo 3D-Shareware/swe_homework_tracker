@@ -53,18 +53,6 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
     );
   }
 
-  void _toggleCompleted(int index, bool? value) {
-    setState(() {
-      _assignmentPresenter.toggleCompleted(index);
-    });
-  }
-
-  void _removeAssignment(int index) {
-    setState(() {
-      _assignmentPresenter.removeAt(index);
-    });
-  }
-
   void _renameAssignment(int index) {
     String newAssignmentTitle = "";
 
@@ -130,7 +118,10 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
                           value: _assignmentPresenter
                               .getAssignment(index)
                               .isCompleted,
-                          onChanged: (value) => _toggleCompleted(index, value),
+                          onChanged: (value) => setState(() {
+                            // toggle assignment
+                            _assignmentPresenter.toggleCompleted(index);
+                          }),
                         ),
                       ),
                       Expanded(
@@ -144,7 +135,10 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
                       Expanded(
                         child: IconButton(
                           onPressed: () {
-                            _removeAssignment(index);
+                            setState(() {
+                              // remove
+                              _assignmentPresenter.removeAt(index);
+                            });
                           },
                           icon: Icon(Icons.delete),
                         ),
