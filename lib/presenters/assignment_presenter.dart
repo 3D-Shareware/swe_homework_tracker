@@ -12,4 +12,21 @@ class AssignmentPresenter {
   void toggleCompleted(int index) {
     _assignments[index].isCompleted = !_assignments[index].isCompleted;
   }
+
+  // feel like this is probably neccessary
+  Assignment getAssignment(int index) {
+    return _assignments[index];
+  }
+
+  void renameAssignment(int index, String title) {
+    _assignments[index].title = title;
+  }
+
+  int getNumberOfAssignments() {
+    return _assignments.length;
+  }
+
+  void removeAt(int index) {
+    _assignments.removeAt(index);
+  }
 }
