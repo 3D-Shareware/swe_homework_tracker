@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../presenters/assignment_presenter.dart';
+
 class AssignmentListScreen extends StatefulWidget {
   const AssignmentListScreen({super.key});
 
@@ -8,7 +10,7 @@ class AssignmentListScreen extends StatefulWidget {
 }
 
 class _AssignmentListScreenState extends State<AssignmentListScreen> {
-  final List<Map<String, dynamic>> _assignments = [];
+  final AssignmentPresenter _assignmentPresenter = AssignmentPresenter();
 
   void _showAddAssignmentDialog() {
     String newAssignmentTitle = "";
@@ -36,7 +38,9 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
               onPressed: () {
                 if (newAssignmentTitle.trim().isNotEmpty) {
                   setState(() {
-                    _assignments.add({"title": newAssignmentTitle.trim()});
+                    _assignmentPresenter.addAssignment(
+                      newAssignmentTitle.trim(),
+                    );
                   });
                 }
                 Navigator.pop(context);
@@ -47,18 +51,6 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
         );
       },
     );
-  }
-
-  void _toggleCompleted(int index, bool? value) {
-    setState(() {
-      _assignments[index]["completed"] = value ?? false;
-    });
-  }
-
-  void _removeAssignment(int index) {
-    setState(() {
-      _assignments.removeAt(index);
-    });
   }
 
   void _renameAssignment(int index) {
@@ -87,7 +79,10 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
               onPressed: () {
                 if (newAssignmentTitle.trim().isNotEmpty) {
                   setState(() {
-                    _assignments[index]["title"] = newAssignmentTitle.trim();
+                    _assignmentPresenter.renameAssignment(
+                      index,
+                      newAssignmentTitle.trim(),
+                    );
                   });
                 }
                 Navigator.pop(context);
@@ -100,19 +95,33 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
     );
   }
 
+  TextStyle _getStyle(bool isCompleted) {
+    if (isCompleted) {
+      return TextStyle(decoration: TextDecoration.lineThrough);
+    }
+    return TextStyle();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Assignments")),
       body: ListView.builder(
-        itemCount: _assignments.length,
+        itemCount: _assignmentPresenter.getNumberOfAssignments(),
         itemBuilder: (context, index) {
           return Card(
             color: Color.from(alpha: 1.0, red: 0.9, green: 0.9, blue: 1.0),
             child: Padding(
               padding: const EdgeInsets.all(14.0),
               child: ListTile(
-                title: Text(_assignments[index]["title"]),
+                // this displays title of the assignment
+                // so this is probably where text formatting code goes???
+                title: Text(
+                  _assignmentPresenter.getAssignment(index).title,
+                  style: _getStyle(
+                    _assignmentPresenter.getAssignment(index).isCompleted,
+                  ),
+                ),
                 trailing: SizedBox(
                   width: 196,
                   child: Row(
@@ -120,8 +129,13 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
                     children: [
                       Expanded(
                         child: CheckboxListTile(
-                          value: _assignments[index]["completed"] ?? false,
-                          onChanged: (value) => _toggleCompleted(index, value),
+                          value: _assignmentPresenter
+                              .getAssignment(index)
+                              .isCompleted,
+                          onChanged: (value) => setState(() {
+                            // toggle assignment
+                            _assignmentPresenter.toggleCompleted(index);
+                          }),
                         ),
                       ),
                       Expanded(
@@ -135,7 +149,10 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
                       Expanded(
                         child: IconButton(
                           onPressed: () {
-                            _removeAssignment(index);
+                            setState(() {
+                              // remove
+                              _assignmentPresenter.removeAt(index);
+                            });
                           },
                           icon: Icon(Icons.delete),
                         ),
