@@ -95,6 +95,13 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
     );
   }
 
+  TextStyle _getStyle(bool isCompleted) {
+    if (isCompleted) {
+      return TextStyle(decoration: TextDecoration.lineThrough);
+    }
+    return TextStyle();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +114,14 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
             child: Padding(
               padding: const EdgeInsets.all(14.0),
               child: ListTile(
-                title: Text(_assignmentPresenter.getAssignment(index).title),
+                // this displays title of the assignment
+                // so this is probably where text formatting code goes???
+                title: Text(
+                  _assignmentPresenter.getAssignment(index).title,
+                  style: _getStyle(
+                    _assignmentPresenter.getAssignment(index).isCompleted,
+                  ),
+                ),
                 trailing: SizedBox(
                   width: 196,
                   child: Row(
