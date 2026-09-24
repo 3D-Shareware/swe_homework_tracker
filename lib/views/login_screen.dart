@@ -9,27 +9,28 @@ class LoginScreen extends StatefulWidget {
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
+}
 
-  class _LoginScreenState extends State<LoginScreen> {
-    final _emailController = TextEditingController();
-    final _passwordController = TextEditingController();
-    final _presenter = AuthPresenter();
+class _LoginScreenState extends State<LoginScreen> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _presenter = AuthPresenter();
 
-    String? _errorMessage;
+  String? _errorMessage;
 
-    void _handleLogin() async {
-      final error = await _presenter.login(
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
-      );
+  void _handleLogin() async {
+    final error = await _presenter.login(
+      _emailController.text.trim(),
+      _passwordController.text.trim(),
+    );
 
     if (error != null) {
       setState(() => _errorMessage = error);
     } else {
-      Navigator.pushReplacement(context, 
-      MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
       );
-    }
     }
   }
 
@@ -45,10 +46,10 @@ class LoginScreen extends StatefulWidget {
         child: Column(
           children: [
             if (_errorMessage != null)
-            Text(_errorMessage!, style: const TextStyle(color: Colors.red)),
+              Text(_errorMessage!, style: const TextStyle(color: Colors.red)),
             TextField(
               controller: _emailController,
-              decoration: const InputDecoration(labelText: "Email")
+              decoration: const InputDecoration(labelText: "Email"),
             ),
             TextField(
               controller: _passwordController,
@@ -56,12 +57,12 @@ class LoginScreen extends StatefulWidget {
               decoration: const InputDecoration(labelText: "Password"),
             ),
             const SizedBox(height: 20),
-            Elevatedbutton(onPressed: _handleLogin, child: const Text("Login")),
-            Text Button(
+            ElevatedButton(onPressed: _handleLogin, child: const Text("Login")),
+            TextButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRout(builder: (_) => const SignupScreen()),
+                  MaterialPageRoute(builder: (_) => const SignupScreen()),
                 );
               },
               child: const Text("Don't have an account? Sign your ass up!"),
@@ -71,5 +72,4 @@ class LoginScreen extends StatefulWidget {
       ),
     );
   }
-  
 }

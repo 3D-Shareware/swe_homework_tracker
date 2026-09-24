@@ -11,35 +11,35 @@ class SignupScreen extends StatefulWidget {
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
+}
 
-  class _SignupScreenState extends State<SignupScreen> {
-    final _emailController = TextEditingController();
-    final _passwordController = TextEditingController();
-    final _confirmPasswordController = TextEditingController();
-    final _presenter = AuthPresenter();
+class _SignupScreenState extends State<SignupScreen> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  final _presenter = AuthPresenter();
 
-    String? _errorMessage;
+  String? _errorMessage;
 
-    void _handleSignup() async {
-      final password = _passwordController.text.trim();
-      final confirmPassword = _confirmPasswordController.text.trim();
+  void _handleSignup() async {
+    final password = _passwordController.text.trim();
+    final confirmPassword = _confirmPasswordController.text.trim();
 
-      if (password != confirmPassword) {
-        setState(() => _errorMessage = "Passwords do NOT match, stupid!");
-        return;
-      }
-      final error = await _presenter.signUp(
-        _emailController.text.trim(),
-        password,
+    if (password != confirmPassword) {
+      setState(() => _errorMessage = "Passwords do NOT match, stupid!");
+      return;
+    }
+    final error = await _presenter.signUp(
+      _emailController.text.trim(),
+      password,
+    );
+    if (error != null) {
+      setState(() => _errorMessage = error);
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
       );
-      if (error != null) {
-        setTate(() => _errorMessage = error);
-      } else {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
-        );
-      }
     }
   }
 
@@ -55,7 +55,7 @@ class SignupScreen extends StatefulWidget {
         child: Column(
           children: [
             if (_errorMessage != null)
-            Text(_errorMessage!, style: const TextStyle(color: Colors.red)),
+              Text(_errorMessage!, style: const TextStyle(color: Colors.red)),
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(labelText: "Email"),
@@ -73,14 +73,16 @@ class SignupScreen extends StatefulWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _handleSignup,
-              child: const Text("Sign Up",)
+              child: const Text("Sign Up"),
             ),
-            TextButton(onPressed: () {
-              Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (_) => const LoginScreen()),
-              );
-            },
-            child: const Text("Already have an account? Log in."),
+            TextButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => const LoginScreen()),
+                );
+              },
+              child: const Text("Already have an account? Log in."),
             ),
           ],
         ),
