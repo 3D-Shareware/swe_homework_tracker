@@ -57,7 +57,6 @@ class DefaultFirebaseOptions {
     projectId: 'homework-tracker-23480230',
     storageBucket: 'homework-tracker-23480230.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBchyM0XbhYg6_1f-nhfHCHzXaJewQ9pnI',
     appId: '1:88385033528:ios:b340b17ae0fc7be8629dcd',
@@ -66,7 +65,6 @@ class DefaultFirebaseOptions {
     storageBucket: 'homework-tracker-23480230.firebasestorage.app',
     iosBundleId: 'com.example.homeworkTracker',
   );
-
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBchyM0XbhYg6_1f-nhfHCHzXaJewQ9pnI',
     appId: '1:88385033528:ios:b340b17ae0fc7be8629dcd',
