@@ -11,6 +11,18 @@ class AssignmentListScreen extends StatefulWidget {
 
 class _AssignmentListScreenState extends State<AssignmentListScreen> {
   final AssignmentPresenter _assignmentPresenter = AssignmentPresenter();
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAssignments();
+  }
+
+  Future<void> _loadAssignments() async {
+    await _assignmentPresenter.loadAssignments();
+    setState(() => _isLoading = false);
+  }
 
   void _showAddAssignmentDialog() {
     String newAssignmentTitle = "";
@@ -35,13 +47,12 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
               child: const Text("Cancel"),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 if (newAssignmentTitle.trim().isNotEmpty) {
-                  setState(() {
-                    _assignmentPresenter.addAssignment(
-                      newAssignmentTitle.trim(),
-                    );
-                  });
+                  await _assignmentPresenter.addAssignment(
+                    newAssignmentTitle.trim(),
+                  );
+                  setState(() {});
                 }
                 Navigator.pop(context);
               },
@@ -106,65 +117,74 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Assignments")),
-      body: ListView.builder(
-        itemCount: _assignmentPresenter.getNumberOfAssignments(),
-        itemBuilder: (context, index) {
-          return Card(
-            color: Color.from(alpha: 1.0, red: 0.9, green: 0.9, blue: 1.0),
-            child: Padding(
-              padding: const EdgeInsets.all(14.0),
-              child: ListTile(
-                // this displays title of the assignment
-                // so this is probably where text formatting code goes???
-                title: Text(
-                  _assignmentPresenter.getAssignment(index).title,
-                  style: _getStyle(
-                    _assignmentPresenter.getAssignment(index).isCompleted,
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              itemCount: _assignmentPresenter.getNumberOfAssignments(),
+              itemBuilder: (context, index) {
+                return Card(
+                  color: Color.from(
+                    alpha: 1.0,
+                    red: 0.9,
+                    green: 0.9,
+                    blue: 1.0,
                   ),
-                ),
-                trailing: SizedBox(
-                  width: 196,
-                  child: Row(
-                    spacing: 64,
-                    children: [
-                      Expanded(
-                        child: CheckboxListTile(
-                          value: _assignmentPresenter
-                              .getAssignment(index)
-                              .isCompleted,
-                          onChanged: (value) => setState(() {
-                            // toggle assignment
-                            _assignmentPresenter.toggleCompleted(index);
-                          }),
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: ListTile(
+                      // this displays title of the assignment
+                      // so this is probably where text formatting code goes???
+                      title: Text(
+                        _assignmentPresenter.getAssignment(index).title,
+                        style: _getStyle(
+                          _assignmentPresenter.getAssignment(index).isCompleted,
                         ),
                       ),
-                      Expanded(
-                        child: IconButton(
-                          onPressed: () {
-                            _renameAssignment(index);
-                          },
-                          icon: Icon(Icons.edit),
+                      trailing: SizedBox(
+                        width: 196,
+                        child: Row(
+                          spacing: 64,
+                          children: [
+                            Expanded(
+                              child: CheckboxListTile(
+                                value: _assignmentPresenter
+                                    .getAssignment(index)
+                                    .isCompleted,
+                                onChanged: (_) async {
+                                  await _assignmentPresenter.toggleCompleted(
+                                    index,
+                                  );
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: IconButton(
+                                onPressed: () {
+                                  _renameAssignment(index);
+                                },
+                                icon: Icon(Icons.edit),
+                              ),
+                            ),
+                            Expanded(
+                              child: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    // remove
+                                    _assignmentPresenter.removeAt(index);
+                                  });
+                                },
+                                icon: Icon(Icons.delete),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Expanded(
-                        child: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              // remove
-                              _assignmentPresenter.removeAt(index);
-                            });
-                          },
-                          icon: Icon(Icons.delete),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
-          );
-        },
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddAssignmentDialog,
         child: const Icon(Icons.add),
