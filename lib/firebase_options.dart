@@ -47,6 +47,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '88385033528',
     projectId: 'homework-tracker-23480230',
     authDomain: 'homework-tracker-23480230.firebaseapp.com',
+    databaseURL: 'https://homework-tracker-23480230-default-rtdb.firebaseio.com',
     storageBucket: 'homework-tracker-23480230.firebasestorage.app',
   );
 
@@ -55,6 +56,7 @@ class DefaultFirebaseOptions {
     appId: '1:88385033528:android:a1259f54016b1d9c629dcd',
     messagingSenderId: '88385033528',
     projectId: 'homework-tracker-23480230',
+    databaseURL: 'https://homework-tracker-23480230-default-rtdb.firebaseio.com',
     storageBucket: 'homework-tracker-23480230.firebasestorage.app',
   );
   static const FirebaseOptions ios = FirebaseOptions(
@@ -62,6 +64,7 @@ class DefaultFirebaseOptions {
     appId: '1:88385033528:ios:b340b17ae0fc7be8629dcd',
     messagingSenderId: '88385033528',
     projectId: 'homework-tracker-23480230',
+    databaseURL: 'https://homework-tracker-23480230-default-rtdb.firebaseio.com',
     storageBucket: 'homework-tracker-23480230.firebasestorage.app',
     iosBundleId: 'com.example.homeworkTracker',
   );
@@ -70,6 +73,7 @@ class DefaultFirebaseOptions {
     appId: '1:88385033528:ios:b340b17ae0fc7be8629dcd',
     messagingSenderId: '88385033528',
     projectId: 'homework-tracker-23480230',
+    databaseURL: 'https://homework-tracker-23480230-default-rtdb.firebaseio.com',
     storageBucket: 'homework-tracker-23480230.firebasestorage.app',
     iosBundleId: 'com.example.homeworkTracker',
   );
@@ -80,6 +84,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '88385033528',
     projectId: 'homework-tracker-23480230',
     authDomain: 'homework-tracker-23480230.firebaseapp.com',
+    databaseURL: 'https://homework-tracker-23480230-default-rtdb.firebaseio.com',
     storageBucket: 'homework-tracker-23480230.firebasestorage.app',
   );
 }

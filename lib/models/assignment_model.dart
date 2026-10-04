@@ -13,7 +13,13 @@ class Assignment {
     final userId = _auth.currentUser?.uid;
     if (userId == null) return [];
 
-    final snapshot = await _db.child("assignments/$userId").get();
+    // I've had enough errors that this is kinda necessary
+    DataSnapshot snapshot;
+    try {
+      snapshot = await _db.child("assignments/$userId").get();
+    } catch (e) {
+      return [];
+    }
     final List<Assignment> assignments = [];
 
     if (snapshot.exists) {

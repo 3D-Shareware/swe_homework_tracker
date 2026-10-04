@@ -16,4 +16,10 @@ class CoursePresenter {
     await Course.addCourse(name, description);
     _courses.add(Course(name: name, description: description));
   }
+
+  Future<void> removeCourse(String name) async {
+    await Course.removeCourse(name);
+    // this part might fail
+    _courses.remove(name);
+  }
 }

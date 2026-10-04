@@ -68,6 +68,43 @@ class _CourseListScreenState extends State<CourseListScreen> {
     );
   }
 
+  void _showRemoveCourseDialog() {
+    String name = '';
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Remove Course"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                decoration: const InputDecoration(labelText: "Course Name"),
+                onChanged: (value) => name = value,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () async {
+                if (name.trim().isNotEmpty) {
+                  await presenter.removeCourse(name.trim());
+                  setState(() {});
+                  Navigator.pop(context);
+                }
+              },
+              child: const Text("Remove"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final courses = presenter.courses;

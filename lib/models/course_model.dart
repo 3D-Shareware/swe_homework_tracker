@@ -35,4 +35,14 @@ class Course {
       "userId": userId,
     });
   }
+
+  // hopefully this functions correctly
+  static Future<void> removeCourse(String name) async {
+    final userId = _auth.currentUser?.uid;
+    if (userId == null) return;
+
+    await _firestore.collection("courses").doc(userId).update({
+      "name": FieldValue.delete(),
+    });
+  }
 }
