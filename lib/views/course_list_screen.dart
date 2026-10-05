@@ -11,6 +11,18 @@ class CourseListScreen extends StatefulWidget {
 
 class _CourseListScreenState extends State<CourseListScreen> {
   final CoursePresenter presenter = CoursePresenter();
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCourses();
+  }
+
+  Future<void> _loadCourses() async {
+    await presenter.loadCourses();
+    setState(() => _isLoading = false);
+  }
 
   void _showAddCourseDialog() {
     String name = '';
@@ -41,15 +53,51 @@ class _CourseListScreenState extends State<CourseListScreen> {
               child: const Text("Cancel"),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 if (name.trim().isNotEmpty) {
-                  setState(() {
-                    presenter.addCourse(name.trim(), description);
-                  });
+                  await presenter.addCourse(name.trim(), description);
+                  setState(() {});
                   Navigator.pop(context);
                 }
               },
               child: const Text("Add"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showRemoveCourseDialog() {
+    String name = '';
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Remove Course"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                decoration: const InputDecoration(labelText: "Course Name"),
+                onChanged: (value) => name = value,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () async {
+                if (name.trim().isNotEmpty) {
+                  await presenter.removeCourse(name.trim());
+                  setState(() {});
+                  Navigator.pop(context);
+                }
+              },
+              child: const Text("Remove"),
             ),
           ],
         );
@@ -63,18 +111,20 @@ class _CourseListScreenState extends State<CourseListScreen> {
 
     return Scaffold(
       appBar: AppBar(title: const Text("Courses")),
-      body: ListView.builder(
-        itemCount: courses.length,
-        itemBuilder: (context, index) {
-          final course = courses[index];
-          return ListTile(
-            title: Text(course.name),
-            subtitle: course.description != null
-                ? Text(course.description!)
-                : null,
-          );
-        },
-      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              itemCount: courses.length,
+              itemBuilder: (context, index) {
+                final course = courses[index];
+                return ListTile(
+                  title: Text(course.name),
+                  subtitle: course.description != null
+                      ? Text(course.description!)
+                      : null,
+                );
+              },
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddCourseDialog,
         child: const Icon(Icons.add),

@@ -5,11 +5,20 @@ class AssignmentPresenter {
 
   List<Assignment> get assignments => _assignments;
 
-  void addAssignment(String title) {
+  Future<void> loadAssignments() async {
+    final fetched = await Assignment.fetchAssignments();
+    _assignments
+      ..clear()
+      ..addAll(fetched);
+  }
+
+  Future<void> addAssignment(String title) async {
+    await Assignment.addAssignment(title);
     _assignments.add(Assignment(title: title));
   }
 
-  void toggleCompleted(int index) {
+  Future<void> toggleCompleted(int index) async {
+    await Assignment.updateCompletionStatus(index, _assignments);
     _assignments[index].isCompleted = !_assignments[index].isCompleted;
   }
 
@@ -18,7 +27,11 @@ class AssignmentPresenter {
     return _assignments[index];
   }
 
-  void renameAssignment(int index, String title) {
+  // new renaming functionality! had to be written for the real-time database
+  Future<void> renameAssignment(int index, String title) async {
+    await Assignment.renameAssignment(index, title, _assignments);
+    // hopefully reloading assignments immediately will fix the weird temporary de-sync after renaming an assignment
+    // loadAssignments();
     _assignments[index].title = title;
   }
 
@@ -26,7 +39,9 @@ class AssignmentPresenter {
     return _assignments.length;
   }
 
-  void removeAt(int index) {
+  // new deleting functionality! had to also be re-written for the real-time database
+  Future<void> removeAt(int index) async {
+    await Assignment.removeAssignment(index, _assignments);
     _assignments.removeAt(index);
   }
 }
