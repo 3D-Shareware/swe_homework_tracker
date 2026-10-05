@@ -58,4 +58,43 @@ class Assignment {
       await ref.update({"isCompleted": updatedStatus});
     }
   }
+
+  // new renaming assignment code
+  static Future<void> renameAssignment(
+    int index,
+    String title,
+    List<Assignment> currentAssignments,
+  ) async {
+    final userId = _auth.currentUser?.uid;
+    if (userId == null || index < 0 || index >= currentAssignments.length)
+      return;
+
+    final snapshot = await _db.child("assignments/$userId").get();
+    if (snapshot.exists) {
+      final data = Map<String, dynamic>.from(snapshot.value as Map);
+      final entry = data.entries.elementAt(index);
+      final ref = _db.child("assignments/$userId/${entry.key}");
+      final updatedStatus = title;
+      await ref.update({"title": updatedStatus});
+    }
+  }
+
+  // new deleting assignment code
+  // new renaming assignment code
+  static Future<void> removeAssignment(
+    int index,
+    List<Assignment> currentAssignments,
+  ) async {
+    final userId = _auth.currentUser?.uid;
+    if (userId == null || index < 0 || index >= currentAssignments.length)
+      return;
+
+    final snapshot = await _db.child("assignments/$userId").get();
+    if (snapshot.exists) {
+      final data = Map<String, dynamic>.from(snapshot.value as Map);
+      final entry = data.entries.elementAt(index);
+      final ref = _db.child("assignments/$userId/${entry.key}");
+      await ref.remove();
+    }
+  }
 }

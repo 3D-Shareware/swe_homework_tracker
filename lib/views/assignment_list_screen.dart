@@ -64,7 +64,7 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
     );
   }
 
-  void _renameAssignment(int index) {
+  Future<void> _renameAssignment(int index) async {
     String newAssignmentTitle = "";
 
     showDialog(
@@ -87,7 +87,7 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
               child: const Text("Cancel"),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 if (newAssignmentTitle.trim().isNotEmpty) {
                   setState(() {
                     _assignmentPresenter.renameAssignment(
@@ -160,19 +160,18 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
                             ),
                             Expanded(
                               child: IconButton(
-                                onPressed: () {
-                                  _renameAssignment(index);
+                                onPressed: () async {
+                                  await _renameAssignment(index);
+                                  setState(() {});
                                 },
                                 icon: Icon(Icons.edit),
                               ),
                             ),
                             Expanded(
                               child: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    // remove
-                                    _assignmentPresenter.removeAt(index);
-                                  });
+                                onPressed: () async {
+                                  await _assignmentPresenter.removeAt(index);
+                                  setState(() {});
                                 },
                                 icon: Icon(Icons.delete),
                               ),
