@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../presenters/assignment_presenter.dart';
+import '../presenters/course_presenter.dart';
 
 class AssignmentListScreen extends StatefulWidget {
   const AssignmentListScreen({super.key});
@@ -11,16 +12,21 @@ class AssignmentListScreen extends StatefulWidget {
 
 class _AssignmentListScreenState extends State<AssignmentListScreen> {
   final AssignmentPresenter _assignmentPresenter = AssignmentPresenter();
+  final CoursePresenter _coursePresenter = CoursePresenter();
   bool _isLoading = true;
+  String? _selectedCourseFilter;
+  String? _newAssignmentCourse;
+  List<String> _courseNames = [];
 
   @override
   void initState() {
     super.initState();
-    _loadAssignments();
+    _loadData();
   }
 
-  Future<void> _loadAssignments() async {
+  Future<void> _loadData() async {
     await _assignmentPresenter.loadAssignments();
+    await _coursePresenter.loadCourses();
     setState(() => _isLoading = false);
   }
 
