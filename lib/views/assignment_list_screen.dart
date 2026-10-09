@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../presenters/assignment_presenter.dart';
 import '../presenters/course_presenter.dart';
+import '../widgets/add_fab.dart';
 
 class AssignmentListScreen extends StatefulWidget {
   const AssignmentListScreen({super.key});
@@ -248,10 +249,7 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
                 );
               },
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showAddAssignmentDialog,
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: AddFab(onPressed: _showAddAssignmentDialog),
     );
   }
 }
