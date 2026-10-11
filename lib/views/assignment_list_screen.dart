@@ -181,8 +181,7 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
-              itemCount: displayedAssignments
-                  .length, //_assignmentPresenter.getNumberOfAssignments(),
+              itemCount: displayedAssignments.length,
               itemBuilder: (context, index) {
                 final assignment = displayedAssignments[index];
                 return Card(
@@ -193,7 +192,7 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
                     blue: 1.0,
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(14.0),
+                    padding: const EdgeInsets.all(14.0), //14.0
                     child: ListTile(
                       // this displays title of the assignment
                       // so this is probably where text formatting code goes???
@@ -209,11 +208,11 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
                           spacing: 64,
                           children: [
                             Expanded(
-                              child: CheckboxListTile(
-                                title: Text(assignment.title),
-                                subtitle: Text(
-                                  "Course: ${assignment.courseName}",
-                                ),
+                              child: Checkbox(
+                                //title: Text(assignment.title),
+                                //subtitle: Text(
+                                //  "Course: ${assignment.courseName}",
+                                //),
                                 value: assignment.isCompleted,
                                 onChanged: (_) async {
                                   await _assignmentPresenter.toggleCompleted(
