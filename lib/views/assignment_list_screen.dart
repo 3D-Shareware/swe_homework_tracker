@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:homework_tracker/models/assignment_model.dart';
 
 import '../presenters/assignment_presenter.dart';
 import '../presenters/course_presenter.dart';
@@ -16,6 +17,9 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
   final CoursePresenter _coursePresenter = CoursePresenter();
   bool _isLoading = true;
   String? _selectedCourseFilter;
+  // my beautiful custom code
+  String? selectedCompletionFilter;
+  final List<String> _completedAssignmentStates = ["Completed", "Incomplete"];
   String? _newAssignmentCourse;
   List<String> _courseNames = [];
 
@@ -143,11 +147,43 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
   @override
   Widget build(BuildContext context) {
     final assignments = _assignmentPresenter.assignments;
-    final displayedAssignments = _selectedCourseFilter == null
+    final List<Assignment> displayedAssignments;
+    // if no course filter, move into completion filter
+    if (_selectedCourseFilter == null) {
+      if (selectedCompletionFilter == null) {
+        displayedAssignments = assignments;
+      } else if (selectedCompletionFilter == "Completed") {
+        displayedAssignments = assignments.where((a) => a.isCompleted).toList();
+      } else {
+        displayedAssignments = assignments
+            .where((a) => !a.isCompleted)
+            .toList();
+      }
+    }
+    // otherwise start with course filter and filter from there
+    else {
+      final filteredAssignments = assignments
+          .where((a) => a.courseName == _selectedCourseFilter)
+          .toList();
+      if (selectedCompletionFilter == null) {
+        displayedAssignments = filteredAssignments;
+      } else if (selectedCompletionFilter == "Completed") {
+        displayedAssignments = filteredAssignments
+            .where((a) => a.isCompleted)
+            .toList();
+      } else {
+        displayedAssignments = filteredAssignments
+            .where((a) => !a.isCompleted)
+            .toList();
+      }
+    }
+    /*
+     = _selectedCourseFilter == null
         ? assignments
         : assignments
               .where((a) => a.courseName == _selectedCourseFilter)
               .toList();
+              */
 
     return Scaffold(
       appBar: AppBar(
@@ -176,6 +212,28 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
                 ),
               ],
             ),
+          DropdownButton<String>(
+            hint: const Text(
+              "Filter by completion",
+              style: TextStyle(color: Colors.white),
+            ),
+            dropdownColor: Colors.green[100],
+            value: selectedCompletionFilter,
+            onChanged: (value) {
+              setState(() {
+                selectedCompletionFilter = value;
+              });
+            },
+            items: [
+              const DropdownMenuItem<String>(
+                value: null,
+                child: Text("Completed & Incomplete"),
+              ),
+              ..._completedAssignmentStates.map(
+                (name) => DropdownMenuItem(value: name, child: Text(name)),
+              ),
+            ],
+          ),
         ],
       ),
       body: _isLoading
@@ -192,7 +250,7 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
                     blue: 1.0,
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(14.0), //14.0
+                    padding: const EdgeInsets.all(14.0),
                     child: ListTile(
                       // this displays title of the assignment
                       // so this is probably where text formatting code goes???
@@ -209,10 +267,6 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
                           children: [
                             Expanded(
                               child: Checkbox(
-                                //title: Text(assignment.title),
-                                //subtitle: Text(
-                                //  "Course: ${assignment.courseName}",
-                                //),
                                 value: assignment.isCompleted,
                                 onChanged: (_) async {
                                   await _assignmentPresenter.toggleCompleted(
