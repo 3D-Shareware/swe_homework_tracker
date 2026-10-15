@@ -34,7 +34,7 @@ class ProfileScreen extends StatelessWidget {
           children: [
             const CircleAvatar(
               radius: 50,
-              backgroundColor: Colors.purple,
+              backgroundColor: Colors.blueGrey,
               child: Icon(Icons.person, size: 50, color: Colors.white),
             ),
             const SizedBox(height: 24),
@@ -56,7 +56,7 @@ class ProfileScreen extends StatelessWidget {
               label: const Text("Logout"),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(50),
-                backgroundColor: Colors.redAccent,
+                backgroundColor: Colors.greenAccent,
               ),
             ),
           ],
