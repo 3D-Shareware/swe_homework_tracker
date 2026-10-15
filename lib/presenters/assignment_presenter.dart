@@ -22,6 +22,14 @@ class AssignmentPresenter {
     _assignments[index].isCompleted = !_assignments[index].isCompleted;
   }
 
+  int get totalAssignments => _assignments.length;
+
+  int get completedAssignments =>
+      _assignments.where((a) => a.isCompleted).length;
+
+  double get completionRatio =>
+      totalAssignments == 0 ? 0 : completedAssignments / totalAssignments;
+
   // feel like this is probably neccessary
   Assignment getAssignment(int index) {
     return _assignments[index];

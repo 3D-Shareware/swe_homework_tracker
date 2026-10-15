@@ -4,6 +4,7 @@ import 'package:homework_tracker/models/assignment_model.dart';
 import '../presenters/assignment_presenter.dart';
 import '../presenters/course_presenter.dart';
 import '../widgets/add_fab.dart';
+import "../theme/themes.dart";
 
 class AssignmentListScreen extends StatefulWidget {
   const AssignmentListScreen({super.key});
@@ -243,12 +244,7 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
               itemBuilder: (context, index) {
                 final assignment = displayedAssignments[index];
                 return Card(
-                  color: Color.from(
-                    alpha: 1.0,
-                    red: 0.9,
-                    green: 0.9,
-                    blue: 1.0,
-                  ),
+                  //color: Color.fromARGB(255, 230, 255, 231),
                   child: Padding(
                     padding: const EdgeInsets.all(14.0),
                     child: ListTile(

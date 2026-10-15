@@ -1,35 +1,83 @@
 import 'package:flutter/material.dart';
+import "package:percent_indicator/circular_percent_indicator.dart";
 
-class HomeScreen extends StatelessWidget {
+import "../presenters/assignment_presenter.dart";
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final AssignmentPresenter _presenter = AssignmentPresenter();
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAssignments();
+  }
+
+  Future<void> _loadAssignments() async {
+    await _presenter.loadAssignments();
+    if (mounted) {
+      setState(() => _loading = false);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-        // I understand RGB more than this silly color list
-        //color: Color.fromARGB(255, 50, 50, 50),
-        image: DecorationImage(
-          image: NetworkImage(
-            // beautiful picture of colorado I found online
-            "https://www.colorado.com/_next/image?url=%2Fsites%2Fdefault%2Ffiles%2F2025-07%2F2023_1_1770%2520%25281%2529.jpg&w=2048&q=75",
-          ),
-          fit: BoxFit.cover,
-        ),
-        border: Border.all(color: Colors.blueAccent, width: 10),
-      ),
-      child: Center(
-        child: Text(
-          "Welcome to Kevin's Homework Tracker!",
-          style: TextStyle(
-            fontSize: 48,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+    final percent = _presenter.completionRatio;
+
+    return Scaffold(
+      appBar: AppBar(title: const Text("Homework Tracker")),
+      body: _loading
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  Center(
+                    child: CircularPercentIndicator(
+                      radius: 120.0,
+                      lineWidth: 14.0,
+                      percent: percent,
+                      center: Text(
+                        "${(percent * 100).round()}%",
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      progressColor: Colors.green,
+                      backgroundColor: Colors.grey.shade300,
+                      animation: true,
+                      animationDuration: 800,
+                      footer: const Padding(
+                        padding: EdgeInsets.only(top: 16),
+                        child: Text("Assignments Completed"),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  Card(
+                    child: ListTile(
+                      title: const Text("Total Assignments"),
+                      trailing: Text("${_presenter.totalAssignments}"),
+                    ),
+                  ),
+                  Card(
+                    child: ListTile(
+                      title: const Text("Completed Assignments"),
+                      trailing: Text("${_presenter.completedAssignments}"),
+                    ),
+                  ),
+                ],
+              ),
+            ),
     );
   }
 }

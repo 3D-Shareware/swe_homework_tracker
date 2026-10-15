@@ -14,6 +14,7 @@ import "views/login_screen.dart";
 import 'package:firebase_core/firebase_core.dart';
 
 import 'firebase_options.dart';
+import "theme/themes.dart";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +30,7 @@ class HomeworkTrackerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Homework Tracker',
-      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepOrange)),
+      theme: Themes.meanGreenTheme,
       home: const SplashScreen(title: 'Flutter Demo Home Page'),
     );
   }
@@ -56,7 +57,7 @@ class SplashScreen extends StatefulWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
-            backgroundColor: Colors.blue,
+            backgroundColor: Colors.green,
             body: Center(
               child: Text(
                 "Homework Tracker",
@@ -100,7 +101,7 @@ class _SplashScreenState extends State<SplashScreen> {
       decoration: BoxDecoration(
         // I understand RGB more than this silly color list
         color: Color.fromARGB(255, 50, 50, 50),
-        border: Border.all(color: Colors.blueAccent, width: 10),
+        border: Border.all(color: Colors.greenAccent, width: 10),
       ),
 
       child: Center(
